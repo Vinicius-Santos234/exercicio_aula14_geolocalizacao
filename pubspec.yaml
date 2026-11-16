@@ -35,6 +35,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   geolocator: ^14.1.2 # Pacote oficial para GPS e Geolocalização
+  url_launcher: ^6.3.3 # Abre o Google Maps (Desafio Avançado)
 
 dev_dependencies:
   flutter_test:

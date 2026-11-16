@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
 import '../services/location_service.dart';
+import '../services/mapa_service.dart';
 import '../utils/formatar_distancia.dart';
 import '../widgets/indicador_precisao.dart';
 
@@ -16,6 +17,7 @@ class GeolocalizacaoScreen extends StatefulWidget {
 
 class _GeolocalizacaoScreenState extends State<GeolocalizacaoScreen> {
   final _locationService = LocationService();
+  final _mapaService = MapaService();
   Position? _posicaoAtual;
   bool _carregando = false;
   String? _mensagemErro;
@@ -48,6 +50,19 @@ class _GeolocalizacaoScreenState extends State<GeolocalizacaoScreen> {
       _positionStreamSub = _locationService.monitorarPosicao().listen(
         (pos) => setState(() => _posicaoAtual = pos),
         onError: (err) => setState(() => _mensagemErro = err.toString()),
+      );
+    }
+  }
+
+  Future<void> _abrirNoMapa() async {
+    final posicao = _posicaoAtual!;
+    final abriu = await _mapaService.abrirNoMapa(
+      posicao.latitude,
+      posicao.longitude,
+    );
+    if (!abriu && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Não foi possível abrir o mapa.')),
       );
     }
   }
@@ -116,11 +131,23 @@ class _GeolocalizacaoScreenState extends State<GeolocalizacaoScreen> {
                         ),
                       ),
                     ),
-                    // Desafio Básico: medidor visual da precisão
                     Padding(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: IndicadorPrecisao(
-                        precisao: _posicaoAtual!.accuracy,
+                      padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+                      child: Wrap(
+                        alignment: WrapAlignment.center,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        spacing: 12,
+                        runSpacing: 8,
+                        children: [
+                          // Desafio Básico: medidor visual da precisão
+                          IndicadorPrecisao(precisao: _posicaoAtual!.accuracy),
+                          // Desafio Avançado: abre a posição no Google Maps
+                          FilledButton.tonalIcon(
+                            onPressed: _abrirNoMapa,
+                            icon: const Icon(Icons.map),
+                            label: const Text('Abrir no Mapa'),
+                          ),
+                        ],
                       ),
                     ),
                   ],
