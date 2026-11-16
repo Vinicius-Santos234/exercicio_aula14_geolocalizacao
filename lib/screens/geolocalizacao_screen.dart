@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
 import '../services/location_service.dart';
+import '../utils/formatar_distancia.dart';
 import '../widgets/indicador_precisao.dart';
 
 class GeolocalizacaoScreen extends StatefulWidget {
@@ -103,6 +104,16 @@ class _GeolocalizacaoScreenState extends State<GeolocalizacaoScreen> {
                       title: const Text('Precisão / Altitude'),
                       subtitle: Text(
                         'Precisão: ${_posicaoAtual!.accuracy.toStringAsFixed(1)}m | Alt: ${_posicaoAtual!.altitude.toStringAsFixed(1)}m',
+                      ),
+                    ),
+                    // Desafio Intermediário: distância até a Fatec Matão
+                    ListTile(
+                      leading: const Icon(Icons.school, color: Colors.purple),
+                      title: const Text('Distância até a Fatec Matão'),
+                      subtitle: Text(
+                        formatarDistancia(
+                          _locationService.distanciaAteFatec(_posicaoAtual!),
+                        ),
                       ),
                     ),
                     // Desafio Básico: medidor visual da precisão
