@@ -119,9 +119,10 @@ Para mover o GPS do emulador, use **Extended controls › Location** ou:
 adb emu geo fix -48.3658 -21.6033   # longitude, latitude
 ```
 
-No navegador também funciona (`flutter run -d chrome`): o Chrome pede a permissão e usa a
-localização da rede. Para rodar no Windows, o Flutter exige o **Modo de Desenvolvedor** ativo (os
-plugins usam links simbólicos).
+Só o Android foi executado. O `geolocator` também tem implementação para o navegador
+(`flutter run -d chrome`), em que o próprio navegador pede a permissão, mas esse caminho não foi
+testado aqui. Para rodar no Windows, o Flutter exige o **Modo de Desenvolvedor** ativo (os plugins
+usam links simbólicos).
 
 ## Testes
 
@@ -194,4 +195,5 @@ feat: adiciona botao Abrir no Mapa com url_launcher para o Google Maps (Desafio 
 fix: valida permissao antes do rastreamento, limita a espera do GPS e evita overflow e setState apos o dispose
 test: cobre o LocationService, a tela do roteiro, os tres desafios e as correcoes com GPS simulado
 docs: adiciona README com arquitetura e evidencias de execucao
+docs: deixa claro no README que so o Android foi executado
 ```
